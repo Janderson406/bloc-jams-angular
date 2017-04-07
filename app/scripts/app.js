@@ -9,6 +9,7 @@
          $stateProvider
              .state('landing', {
                  url: '/',
+                 controller: 'LandingCtrl as landing',
                  templateUrl: '/templates/landing.html'
              })
          // $stateProvider.state(stateName ,<- unique string that identifies a state , stateConfig <- object that defines specific properties of the state)
@@ -19,6 +20,7 @@
              })     
             .state('collection', {
                  url: '/collection',
+                 controller: 'CollectionCtrl as collection',
                  templateUrl: '/templates/collection.html'
              });     
      
