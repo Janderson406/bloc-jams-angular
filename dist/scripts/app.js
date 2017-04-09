@@ -16,6 +16,7 @@
          // <ui-view> directive in the global file (index.html) will load the template associated with the landing state.
              .state('album', {
                  url: '/album',
+                 controller: 'AlbumCtrl as album',
                  templateUrl: '/templates/album.html'
              })     
             .state('collection', {
