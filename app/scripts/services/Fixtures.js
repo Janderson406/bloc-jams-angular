@@ -2,6 +2,7 @@
      function Fixtures() {            //This service is a "Plain Old JavaScript Object" (POJO). Components that
          var Fixtures = {};           // inject this service as a dependency can access the public methods of the object
                                       // that is, the properties and methods that are returned.
+
          var albumPicasso = {
              title: 'The Colors',
              artist: 'Pablo Picasso',
@@ -36,7 +37,16 @@
              return albumPicasso;
          };
 
+         Fixtures.getCollection = function(numberOfAlbums) {
+             var albums = [];
+             for (var i = 0; i < numberOfAlbums; i++) {
+                 albums.push(albumPicasso);
+             }
+             return albums;
+         };
+
          return Fixtures;
+
 
      }
 
