@@ -28,7 +28,7 @@
 
              currentBuzzObject.bind('timeupdate', function() {   //creates a custom event that other parts of the Angular application can "listen" to.
                  $rootScope.$apply(function() {                 // To update the song's playback progress from anywhere - timeupdate is one of a number of HTML5 audio events we can use with Buzz's bind() method
-                     SongPlayer.currentTime = currentBuzzObject.getTime();
+                     SongPlayer.currentTime = currentBuzzObject.getTime(); // Using  $apply, we apply the time update change to the $rootScope
                  });
              });
 
