@@ -1,5 +1,5 @@
  (function() {
-      function SongPlayer(Fixtures) {
+      function SongPlayer($rootScope, Fixtures) {
          var SongPlayer = {};
 
          var currentAlbum = Fixtures.getAlbum();
@@ -26,6 +26,12 @@
                 preload: true
              });
 
+             currentBuzzObject.bind('timeupdate', function() {   //creates a custom event that other parts of the Angular application can "listen" to.
+                 $rootScope.$apply(function() {                 // To update the song's playback progress from anywhere - timeupdate is one of a number of HTML5 audio events we can use with Buzz's bind() method
+                     SongPlayer.currentTime = currentBuzzObject.getTime();
+                 });
+             });
+
              SongPlayer.currentSong = song;
          };
 
@@ -45,6 +51,12 @@
 
 
          SongPlayer.currentSong = null;  //turn 'var currentSong' into a public attribute so that we can use it within PlayerBarCtrl
+
+          /**
+           * @desc Current playback time (in seconds) of currently playing song
+           * @type {Number}
+           */
+        SongPlayer.currentTime = null;
 
          SongPlayer.play = function(song) {
              song = song || SongPlayer.currentSong;
@@ -97,12 +109,23 @@
             }
           };
 
+         /**
+         * @function setCurrentTime
+         * @desc Set current time (in seconds) of currently playing song
+         * @param {Number} time
+         */
+         SongPlayer.setCurrentTime = function(time) {
+             if (currentBuzzObject) {
+                 currentBuzzObject.setTime(time);
+             }
+         };
+
          return SongPlayer;
       }
 
       angular
           .module('blocJams')
-          .factory('SongPlayer', ['Fixtures', SongPlayer]);
+          .factory('SongPlayer', ['$rootScope', 'Fixtures', SongPlayer]);
   })();
 
  //The play method takes an argument, song, which we'll get from the Album view when

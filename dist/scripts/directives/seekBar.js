@@ -18,7 +18,9 @@
        restrict: 'E',
        // instructs Angular to treat this directive as an element. For example, Angular will run the code if it finds <seek-bar> in the HTML,
        // but *not* if it finds  <div seek-bar>
-       scope: {},
+       scope: {
+           onChange: '&'  //& binding type provides a way to execute an expression in the context of the parent scope
+       },
        link: function(scope, element, attributes) {
          // scope	Specifies that a new scope be created for the directive. ensures that a new isolate scope will exist solely for the directive
          // link Responsible for registering DOM listeners and updating the DOM. This is where we put most of the directive logic.
@@ -26,6 +28,16 @@
          scope.max = 100; //Holds the maximum value of the song and volume seek bars. Default value is 100.
 
          var seekBar = $(element); //Holds the element that matches the directive (<seek-bar>) as a jQuery object so we can call jQuery methods on it
+
+
+         attributes.$observe('value', function(newValue) {
+             scope.value = newValue;
+         });
+
+         attributes.$observe('max', function(newValue) {
+             scope.max = newValue;
+         });
+
 
          var percentString = function() { // calculates a percent based on the value and maximum value of a seek bar
            var value = scope.value;
@@ -50,6 +62,7 @@
          scope.onClickSeekBar = function(event) {
            var percent = calculatePercent(seekBar, event);
            scope.value = percent * scope.max;
+           notifyOnChange(scope.value);
          };
 
          //Update the Seek Bar from a Mousedown Event
@@ -58,6 +71,7 @@
              var percent = calculatePercent(seekBar, event);
              scope.$apply(function() {
                scope.value = percent * scope.max;
+               notifyOnChange(scope.value);
              });
            });
 
@@ -65,6 +79,12 @@
              $document.unbind('mousemove.thumb');
              $document.unbind('mouseup.thumb');
            });
+         };
+
+         var notifyOnChange = function(newValue) {        //external function that the directive will call when the seek bar position changes.
+             if (typeof scope.onChange === 'function') {  //purpose is to notify onChange (on-change in player_bar.html) that scope.value has changed
+                 scope.onChange({value: newValue});
+             }
          };
 
        }
