@@ -64,7 +64,7 @@
           * @type {Number}
           */
 
-         SongPlayer.Volume = null;
+         SongPlayer.volume = 65;
 
          SongPlayer.play = function(song) {
              song = song || SongPlayer.currentSong;
@@ -131,7 +131,7 @@
         SongPlayer.setVolume = function(level) {
             if (currentBuzzObject) {
                 currentBuzzObject.setVolume(level);
-            }
+            };
          };
 
          return SongPlayer;
