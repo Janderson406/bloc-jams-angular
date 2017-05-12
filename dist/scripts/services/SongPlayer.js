@@ -32,7 +32,15 @@
                  });
              });
 
+             currentBuzzObject.bind('ended', function() {  //move to next song after prev one ends 
+                 $rootScope.$apply(function() {
+                       SongPlayer.next();
+                 });
+             });
+
              SongPlayer.currentSong = song;
+
+
          };
 
          var playSong = function(song) {
